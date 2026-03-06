@@ -112,13 +112,14 @@ export function getVotes(proposalId: number): Vote[] {
 
 export function expireOldProposals(chatId: string): Proposal[] {
   const db = getDb()
+  const now = Date.now()
   const expired = db.query<Proposal, [string, number]>(
     "SELECT * FROM proposals WHERE chat_id = ? AND status = 'active' AND expires_at <= ?"
-  ).all(chatId, Date.now())
+  ).all(chatId, now)
   if (expired.length > 0) {
     db.run(
       "UPDATE proposals SET status = 'expired' WHERE chat_id = ? AND status = 'active' AND expires_at <= ?",
-      [chatId, Date.now()]
+      [chatId, now]
     )
   }
   return expired
