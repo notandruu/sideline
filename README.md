@@ -8,10 +8,10 @@ no app. no UI. just text.
 
 ## how it works
 
-1. add sideline to any iMessage group chat
-2. friends deposit USDC into the shared pool
-3. someone proposes a bet in plain english ("bet $50 on the lakers winning tonight")
-4. the group votes yes/no — weighted by each person's share
+1. run sideline on your Mac — it watches all your iMessage group chats
+2. friends declare how much they're putting in (`deposit $50`)
+3. someone proposes a bet in plain english (`bet $50 on the lakers winning tonight`)
+4. the group votes yes/no — weighted by each person's share of the pool
 5. 2/3 majority → sideline auto-executes the trade on polymarket
 6. winnings split proportionally when the market resolves
 
@@ -28,6 +28,8 @@ no app. no UI. just text.
 | `yes` / `no` | vote on the active proposal |
 | `status` | pool balance + open bets |
 | `help` | show all commands |
+
+votes also understand casual replies — `lfg`, `im in`, `bet`, `nah`, `pass`, etc.
 
 ---
 
@@ -46,9 +48,9 @@ bun dev
 |---|---|
 | `ANTHROPIC_API_KEY` | for natural language command parsing |
 | `POLYGON_RPC_URL` | polygon mainnet rpc (e.g. `https://polygon-rpc.com`) |
-| `MASTER_PRIVATE_KEY` | EVM private key — this wallet holds group USDC |
+| `MASTER_PRIVATE_KEY` | EVM private key — this wallet executes trades on polymarket |
 
-**macOS requirement:** grant Full Disk Access to your terminal app in System Settings → Privacy & Security. this lets the photon imessage-kit read `~/Library/Messages/chat.db`.
+**macOS requirement:** grant Full Disk Access to your terminal app in System Settings → Privacy & Security. this lets sideline read `~/Library/Messages/chat.db`.
 
 ---
 
@@ -61,9 +63,3 @@ bun dev
 - **database:** sqlite via `bun:sqlite` (local, zero infra)
 - **prediction markets:** polymarket gamma api (read) + clob api (trade)
 - **chain:** polygon — all positions in USDC
-
----
-
-## built for
-
-[photon build challenge](https://photon.so) — personal utility category.
