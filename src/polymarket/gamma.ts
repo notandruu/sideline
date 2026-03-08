@@ -67,7 +67,10 @@ export async function searchSportsMarkets(query?: string): Promise<SportEvent[]>
   })
   if (query) params.set('title', query)
 
-  const res = await fetch(`${config.polymarketGammaUrl}/events?${params}`)
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10000)
+  const res = await fetch(`${config.polymarketGammaUrl}/events?${params}`, { signal: controller.signal })
+  clearTimeout(timeout)
   if (!res.ok) throw new Error(`gamma api error: ${res.status}`)
 
   const events: GammaEvent[] = await res.json()
@@ -82,7 +85,10 @@ export async function searchSportsMarkets(query?: string): Promise<SportEvent[]>
 }
 
 export async function getMarketByConditionId(conditionId: string): Promise<MarketData | null> {
-  const res = await fetch(`${config.polymarketGammaUrl}/markets?id=${conditionId}`)
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10000)
+  const res = await fetch(`${config.polymarketGammaUrl}/markets?id=${conditionId}`, { signal: controller.signal })
+  clearTimeout(timeout)
   if (!res.ok) return null
   const markets: GammaMarket[] = await res.json()
   if (!markets.length) return null
