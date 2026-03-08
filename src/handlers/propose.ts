@@ -13,6 +13,8 @@ export async function handlePropose(
   side: 'yes' | 'no',
   amount: number
 ): Promise<string> {
+  if (amount < 1) return 'minimum bet is $1.'
+
   const member = getMember(chatId, proposer)
   if (!member) return "you're not in this pool. deposit first."
   if (member.balance_usdc <= 0) return 'your balance is $0. deposit to bet.'
