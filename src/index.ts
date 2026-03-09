@@ -46,6 +46,9 @@ async function main(): Promise<void> {
 
   getDb()
 
+  process.on('SIGINT', () => { logger.info('shutting down'); process.exit(0) })
+  process.on('SIGTERM', () => { logger.info('shutting down'); process.exit(0) })
+
   setInterval(() => {
     checkPositions().catch(err => logger.error('position checker failed', err))
   }, config.positionCheckIntervalMs)
