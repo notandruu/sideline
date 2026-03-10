@@ -89,11 +89,11 @@ async function executeProposal(chatId: string, proposalId: number): Promise<stri
     })
 
     const numShares = proposal.num_shares ?? proposal.amount_usdc / proposal.price
-    const payout = numShares * 1.0
+    const payout = numShares
 
     return `BET PLACED
 ${formatUsd(proposal.amount_usdc)} on ${proposal.side.toUpperCase()} @ ${formatCents(proposal.price)}
-potential payout: ${formatUsd(payout)}`
+potential payout: ${formatUsd(payout)} (${formatCents(proposal.price)} implied odds)`
   } catch (err) {
     logger.error('execution failed', err)
     updateProposalStatus(proposal.id, 'passed')
