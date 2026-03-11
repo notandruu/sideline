@@ -40,7 +40,7 @@ export async function handleStatus(
       const yesVotes = formatPercent(p.total_weight_yes)
       const timeLeft = Math.max(0, Math.round((p.expires_at - Date.now()) / 60000))
       lines.push(`#${p.id}: ${p.market_question}`)
-      lines.push(`  ${p.side.toUpperCase()} ${formatUsd(p.amount_usdc)} | ${yesVotes} yes | ${timeLeft}m left\n`)
+      lines.push(`  ${p.side.toUpperCase()} ${formatUsd(p.amount_usdc)} | ${yesVotes} yes | ${formatPercent(p.total_weight_no)} no | ${timeLeft}m left\n`)
     }
     return lines.join('\n')
   }
