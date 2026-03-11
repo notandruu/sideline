@@ -67,3 +67,8 @@ CREATE TABLE IF NOT EXISTS positions (
   FOREIGN KEY (chat_id) REFERENCES groups(chat_id),
   FOREIGN KEY (proposal_id) REFERENCES proposals(id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_proposals_chat_status ON proposals(chat_id, status);
+CREATE INDEX IF NOT EXISTS idx_votes_proposal ON votes(proposal_id);
+CREATE INDEX IF NOT EXISTS idx_positions_chat_status ON positions(chat_id, status);
+CREATE INDEX IF NOT EXISTS idx_members_chat ON members(chat_id);
