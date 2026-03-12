@@ -1,5 +1,5 @@
 import { getMember, updateBalance, getTotalPool } from '../db/members'
-import { getOpenPositions } from '../db/bets'
+import { getOpenPositions, getActiveProposals } from '../db/bets'
 import { formatUsd } from '../utils/format'
 
 export async function handleWithdraw(
@@ -17,6 +17,11 @@ export async function handleWithdraw(
   const lockedRatio = totalPool > 0 ? member.balance_usdc / totalPool : 0
   const lockedAmount = positions.reduce((sum, p) => sum + p.amount_usdc * lockedRatio, 0)
   const available = Math.max(0, member.balance_usdc - lockedAmount)
+
+  const activeProposals = getActiveProposals(chatId)
+  if (activeProposals.length > 0) {
+    return `can't withdraw while a vote is active. wait for proposal #${activeProposals[0].id} to resolve.`
+  }
 
   const withdrawAmount = amount === 'all' ? available : amount
 
