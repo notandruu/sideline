@@ -5,7 +5,7 @@ export const config = {
   polymarketClobUrl: 'https://clob.polymarket.com',
   polymarketGammaUrl: 'https://gamma-api.polymarket.com',
   polygonChainId: 137,
-  proposalExpiryMs: 60 * 60 * 1000,
+  proposalExpiryMs: parseInt(process.env.PROPOSAL_EXPIRY_MINUTES ?? '60') * 60 * 1000,
   supermajorityThreshold: 2 / 3,
   positionCheckIntervalMs: 5 * 60 * 1000,
 }
