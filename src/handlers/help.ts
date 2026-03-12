@@ -7,5 +7,6 @@ bet $30 on lakers winning — propose a bet
 yes / no — vote on proposals
 status — check pool balance + bets
 
-votes are weighted by your share. 2/3 majority to pass.`
+votes are weighted by your pool share — more skin in the game = more say.
+proposer auto-votes yes. group needs 2/3 to execute.`
 }
