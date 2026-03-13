@@ -102,7 +102,8 @@ export function formatMarketsForChat(events: SportEvent[]): string {
   let idx = 1
   for (const event of events.slice(0, 5)) {
     for (const market of event.markets.slice(0, 2)) {
-      lines.push(`${idx}. ${market.question}`)
+      const question = market.question.length > 60 ? market.question.slice(0, 57) + '...' : market.question
+      lines.push(`${idx}. ${question}`)
       lines.push(`   YES: ${formatCents(market.priceYes)} | NO: ${formatCents(market.priceNo)}`)
       lines.push(`   vol: $${Math.round(market.volume).toLocaleString()}\n`)
       idx++
