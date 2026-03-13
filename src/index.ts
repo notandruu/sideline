@@ -12,6 +12,10 @@ if (!config.anthropicApiKey) {
   process.exit(1)
 }
 
+logger.info(`anthropic: ${config.anthropicApiKey ? 'ok' : 'MISSING'}`)
+logger.info(`polygon rpc: ${config.polygonRpcUrl}`)
+logger.info(`wallet: ${config.masterPrivateKey ? 'configured' : 'MISSING'}`)
+
 async function checkPositions(): Promise<void> {
   const db = getDb()
   const chats = db.query<{ chat_id: string }, [string]>('SELECT DISTINCT chat_id FROM positions WHERE status = ?').all('open')
