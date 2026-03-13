@@ -151,3 +151,11 @@ export function resolvePosition(id: number, status: 'won' | 'lost', payout: numb
     [status, payout, Date.now(), id]
   )
 }
+
+export function sellPosition(id: number, payout: number): void {
+  const db = getDb()
+  db.run(
+    "UPDATE positions SET status = 'sold', payout = ?, resolved_at = ? WHERE id = ?",
+    [payout, Date.now(), id]
+  )
+}
