@@ -63,7 +63,7 @@ export async function searchSportsMarkets(query?: string): Promise<SportEvent[]>
     tag: 'sports',
     active: 'true',
     closed: 'false',
-    limit: '15'
+    limit: '20'
   })
   if (query) params.set('title', query)
 
