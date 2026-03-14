@@ -76,5 +76,5 @@ if right, payout: ${payout}
 
 ${name} voted yes automatically.
 vote "yes" to approve, "no" to reject
-need 2/3 majority. expires in 1h.`
+need ${Math.round(config.supermajorityThreshold * 100)}% majority. expires in 1h.`
 }
