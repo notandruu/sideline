@@ -459,13 +459,13 @@
     { type: 'me',   text: 'JAKE GET ON' },
     { type: 'me',   text: 'vote yes rn' },
     { type: 'them', text: 'jake voted yes (38% weight)\nmike voted yes (29% weight)\n\nBET PLACED 🎰', typing: 1100 },
-    { type: 'meme', label: 'attach your hype meme here', icon: '🔥' },
+    { type: 'meme', src: 'memes/speed.webp' },
     { type: 'ts',   text: '11:48 PM' },
     { type: 'them', text: '🏆 WARRIORS WIN\n\npool cashed $164 on the polymarket bet\npool is now $404 📈', typing: 800 },
     { type: 'me',   text: 'LETSSSS GOOOO' },
     { type: 'them', text: 'celtics game tomorrow at 7\nwant me to find a market?', typing: 1800 },
     { type: 'me',   text: 'yes 😈' },
-    { type: 'meme', label: 'attach your reaction meme here', icon: '😂' },
+    { type: 'meme', src: 'memes/joever.jpg' },
   ]
 
   const titles = [
@@ -535,12 +535,23 @@
     if (item.type === 'meme') {
       const row = document.createElement('div')
       row.className = 'row them'
-      const meme = document.createElement('div')
-      meme.className = 'meme-placeholder'
-      meme.innerHTML = `<span class="icon">${item.icon}</span><span>${item.label}</span>`
-      row.appendChild(meme)
+      if (item.src) {
+        const meme = document.createElement('div')
+        meme.className = 'meme'
+        const img = document.createElement('img')
+        img.src = item.src
+        img.alt = 'meme'
+        meme.appendChild(img)
+        row.appendChild(meme)
+      } else {
+        const meme = document.createElement('div')
+        meme.className = 'meme-placeholder'
+        meme.innerHTML = `<span class="icon">${item.icon}</span><span>${item.label}</span>`
+        row.appendChild(meme)
+      }
       messagesEl.appendChild(row)
       requestAnimationFrame(() => row.classList.add('show'))
+      messagesEl.scrollTop = messagesEl.scrollHeight
       return
     }
 
