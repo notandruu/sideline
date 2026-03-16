@@ -27,17 +27,19 @@ built on [photon's imessage-kit](https://github.com/photon-ai/imessage-kit). the
 
 ## commands
 
-| message | what happens |
-|---|---|
-| `deposit $50` | add $50 to your pool share |
-| `withdraw $20` | pull $20 out (only available balance) |
-| `what games are on` | browse live polymarket sports markets |
-| `bet $50 on lakers winning` | propose a bet to the group |
-| `yes` / `no` | vote on the active proposal |
-| `status` | pool balance + open bets |
-| `help` | show all commands |
+there are no hardcoded commands. every message is parsed by claude haiku, so you can say things however you'd naturally text them.
 
-votes also understand casual replies — `lfg`, `im in`, `bet`, `nah`, `pass`, etc.
+| intent | example phrases |
+|---|---|
+| deposit | `im putting in 50 bucks` · `deposit $50` · `add me for 100` |
+| withdraw | `pull out $20` · `withdraw 30` · `take me out` |
+| browse markets | `what games are on` · `any nba markets` · `show me lakers bets` |
+| propose a bet | `bet $50 on lakers winning` · `throw 30 on the celtics` · `$20 against the warriors` |
+| vote yes | `yes` · `lfg` · `im in` · `bet` · `down` · `lets go` |
+| vote no | `no` · `nah` · `pass` · `im out` · `hard no` |
+| check status | `how much do we have` · `what bets are open` · `status` |
+
+normal conversation (`lol`, `nice`, `fr`) is ignored — sideline stays silent unless there's betting intent.
 
 ---
 
