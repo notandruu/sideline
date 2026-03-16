@@ -1,12 +1,16 @@
 # sideline
 
-> add sideline to your group chat, pool money with friends, and bet on sports together through polymarket, all over iMessage.
+the best part about betting isn't making money — it's doing it with friends. sideline turns your iMessage group chat into a mini hedge fund that bets on sports and world events together, no app required.
 
-**personal utility** — your friends are already texting about the game. now the bet happens in the same thread.
+built on [photon's imessage-kit](https://github.com/photon-ai/imessage-kit). the interface is your group chat. the agent is just another contact.
 
-**conversation-native** — no app, no link, no UI. sideline lives inside the group chat. every interaction is a text message.
+---
 
-**one sentence** — pool money with your group chat and bet on sports through polymarket, without ever leaving iMessage.
+**personal utility** — your friends are already texting about the game. now the bet happens in the same thread, executed on polymarket in seconds.
+
+**conversation-native** — no app, no link, no UI. sideline lives inside iMessage. every deposit, proposal, and vote is a text message.
+
+**one sentence** — add sideline to your group chat, pool money with friends, and bet on sports together through polymarket, all over iMessage.
 
 ---
 
