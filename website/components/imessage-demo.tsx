@@ -1,0 +1,278 @@
+"use client"
+
+import { useEffect, useRef, useState, useCallback } from "react"
+
+const script = [
+  { type: "me",   text: "yo warriors tonight?" },
+  { type: "them", text: "yep vs kings. YES sitting at 61c rn 👀", typing: 1400 },
+  { type: "them", text: "pool has $340 in it btw", typing: 0 },
+  { type: "me",   text: "ok throw 100 on warriors" },
+  { type: "them", text: "bet. proposal up —\n$100 warriors YES @ 61c\npayout $164 if they win 💰", typing: 1800 },
+  { type: "them", text: "u voted yes already (u proposed it lol)\nwaiting on jake + mike", typing: 0 },
+  { type: "me",   text: "JAKE" },
+  { type: "me",   text: "bro vote yes rn" },
+  { type: "them", text: "jake in 👍 mike in 👍\n\nbet placed 🎰", typing: 1000 },
+  { type: "meme", src: "/images/speed.webp" },
+  { type: "ts",   text: "11:48 PM" },
+  { type: "them", text: "🏆 warriors won bro\n\ncashed $164, pool sitting at $404 now", typing: 700 },
+  { type: "me",   text: "LETSSS GOOOO" },
+  { type: "me",   text: "omg" },
+  { type: "them", text: "lmao easy money\n\nceltics game tmrw at 7, want me to find a market?", typing: 1600 },
+  { type: "me",   text: "obviously 😈" },
+  { type: "meme", src: "/images/joever.jpg" },
+]
+
+const titles = [
+  { at: 0,  title: "No app." },
+  { at: 3,  title: "No UI." },
+  { at: 8,  title: "Just text." },
+  { at: 11, title: "Wins you money." },
+  { at: 16, title: "sideline" },
+]
+
+type MessageItem =
+  | { id: number; kind: "ts"; text: string }
+  | { id: number; kind: "me" | "them"; text: string; cont: boolean }
+  | { id: number; kind: "meme"; src: string }
+
+export function IMessageDemo() {
+  const [messages, setMessages] = useState<MessageItem[]>([])
+  const [typing, setTyping] = useState(false)
+  const [title, setTitle] = useState("No app.")
+  const [done, setDone] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const idxRef = useRef(0)
+  const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const counterRef = useRef(0)
+
+  const getTitle = (i: number) => {
+    let active = titles[0]
+    for (const t of titles) { if (i >= t.at) active = t }
+    return active.title
+  }
+
+  const step = useCallback(() => {
+    const idx = idxRef.current
+    if (idx >= script.length) { setDone(true); return }
+
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current)
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current)
+
+    const item = script[idx]
+    const prevItem = idx > 0 ? script[idx - 1] : null
+    setTitle(getTitle(idx))
+
+    const typingMs = item.typing != null ? item.typing : (item.type === "them" ? 1100 : 0)
+
+    const addMessage = () => {
+      const id = counterRef.current++
+      setMessages(prev => {
+        const prevType = prev.length > 0 ? prev[prev.length - 1] : null
+        if (item.type === "ts") {
+          return [...prev, { id, kind: "ts", text: item.text }]
+        }
+        if (item.type === "meme") {
+          return [...prev, { id, kind: "meme", src: item.src! }]
+        }
+        const cont = prevType?.kind === item.type
+        return [...prev, { id, kind: item.type as "me" | "them", text: item.text!, cont }]
+      })
+      idxRef.current = idx + 1
+      autoTimerRef.current = setTimeout(step, item.type === "me" ? 650 : 750)
+    }
+
+    if (typingMs > 0 && item.type === "them") {
+      setTyping(true)
+      typingTimerRef.current = setTimeout(() => {
+        setTyping(false)
+        setTimeout(addMessage, 100)
+      }, typingMs)
+    } else {
+      setTyping(false)
+      addMessage()
+    }
+  }, [])
+
+  const advance = useCallback(() => {
+    if (idxRef.current >= script.length) return
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current)
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current)
+    setTyping(false)
+    step()
+  }, [step])
+
+  useEffect(() => {
+    const timer = setTimeout(step, 1000)
+    return () => {
+      clearTimeout(timer)
+      if (autoTimerRef.current) clearTimeout(autoTimerRef.current)
+      if (typingTimerRef.current) clearTimeout(typingTimerRef.current)
+    }
+  }, [step])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, typing])
+
+  return (
+    <div
+      className="flex flex-col items-center select-none cursor-pointer"
+      onClick={advance}
+      style={{ WebkitTapHighlightColor: "transparent" }}
+    >
+      <div className="mb-7 min-h-[56px] text-center">
+        <p className="text-2xl font-bold tracking-tight text-[#1d1d1f] transition-all duration-300">{title}</p>
+        <p className="mt-1 text-[13px] text-[#86868b]">tap anywhere to advance</p>
+      </div>
+
+      {/* Phone shell */}
+      <div
+        className="flex flex-col overflow-hidden"
+        style={{
+          width: 375,
+          maxWidth: "100%",
+          height: 700,
+          background: "white",
+          borderRadius: 50,
+          boxShadow: "0 0 0 1px rgba(0,0,0,0.07), 0 24px 64px rgba(0,0,0,0.13), 0 8px 20px rgba(0,0,0,0.08)",
+        }}
+      >
+        {/* Status bar */}
+        <div className="flex-shrink-0 flex justify-between items-center px-6 pt-3.5 bg-white">
+          <span style={{ fontSize: 15, fontWeight: 600, color: "#1d1d1f" }}>9:41</span>
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-end gap-0.5" style={{ height: 12 }}>
+              {[4, 6, 9, 12].map((h, i) => (
+                <div key={i} style={{ width: 3, height: h, background: "#1d1d1f", borderRadius: 1 }} />
+              ))}
+            </div>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="#1d1d1f">
+              <path d="M8 2.4C5.6 2.4 3.4 3.4 1.8 5L0 3.2C2.2 1.2 5 0 8 0s5.8 1.2 8 3.2L14.2 5C12.6 3.4 10.4 2.4 8 2.4z"/>
+              <path d="M8 6c-1.4 0-2.6.6-3.6 1.4L2.6 5.6C4 4.4 5.9 3.6 8 3.6s4 .8 5.4 2L11.6 7.4C10.6 6.6 9.4 6 8 6z"/>
+              <circle cx="8" cy="11" r="1.8"/>
+            </svg>
+            <div style={{ width: 24, height: 12, border: "1.5px solid #1d1d1f", borderRadius: 3, position: "relative", display: "flex", alignItems: "center", padding: 2 }}>
+              <div style={{ width: "75%", height: "100%", background: "#34c759", borderRadius: 1 }} />
+              <div style={{ position: "absolute", right: -5, top: "50%", transform: "translateY(-50%)", width: 2.5, height: 5, background: "#1d1d1f", borderRadius: "0 1px 1px 0" }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Chat header */}
+        <div className="flex-shrink-0 px-5 py-2 pb-3 text-center border-b bg-white" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
+          <div style={{ fontSize: 28, marginBottom: 2 }}>🏀</div>
+          <div style={{ fontSize: 16, fontWeight: 600, color: "#1d1d1f" }}>squad bets</div>
+          <div style={{ fontSize: 12, color: "#007AFF", marginTop: 2 }}>jake, mike, sideline &amp; you</div>
+        </div>
+
+        {/* Messages */}
+        <div
+          className="flex-1 overflow-y-auto flex flex-col gap-[3px] px-3 pt-4 pb-2"
+          style={{ scrollbarWidth: "none" } as React.CSSProperties}
+        >
+          <div className="text-center text-[11px] font-medium text-[#86868b] uppercase tracking-[0.3px] my-2.5">
+            Today 9:41 PM
+          </div>
+
+          {messages.map((msg) => {
+            if (msg.kind === "ts") {
+              return (
+                <div key={msg.id} className="text-center text-[11px] font-medium text-[#86868b] uppercase tracking-[0.3px] my-2.5">
+                  {msg.text}
+                </div>
+              )
+            }
+            if (msg.kind === "meme") {
+              return (
+                <div key={msg.id} className="flex items-end gap-1.5 mr-[60px] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div style={{ borderRadius: "18px 18px 5px 18px", overflow: "hidden", maxWidth: 200 }}>
+                    <img src={msg.src} alt="meme" style={{ width: "100%", display: "block" }} />
+                  </div>
+                </div>
+              )
+            }
+            const isMe = msg.kind === "me"
+            const bubbleStyle: React.CSSProperties = isMe
+              ? {
+                  background: "#007AFF",
+                  color: "white",
+                  borderRadius: msg.cont ? "18px" : "18px 18px 5px 18px",
+                  padding: "9px 13px",
+                  fontSize: 15,
+                  lineHeight: 1.45,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  maxWidth: "100%",
+                }
+              : {
+                  background: "#E5E5EA",
+                  color: "#1d1d1f",
+                  borderRadius: msg.cont ? "18px" : "18px 18px 18px 5px",
+                  padding: "9px 13px",
+                  fontSize: 15,
+                  lineHeight: 1.45,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  maxWidth: "100%",
+                }
+            return (
+              <div
+                key={msg.id}
+                className={`flex items-end gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-300 ${isMe ? "flex-row-reverse ml-[60px]" : "mr-[60px]"}`}
+              >
+                <div style={bubbleStyle}>{msg.text}</div>
+              </div>
+            )
+          })}
+
+          {typing && (
+            <div className="flex items-end mr-[60px] animate-in fade-in slide-in-from-bottom-1 duration-200">
+              <div style={{ background: "#E5E5EA", borderRadius: "18px 18px 18px 5px", padding: "12px 16px", display: "flex", gap: 5, alignItems: "center" }}>
+                {[0, 0.18, 0.36].map((delay, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 8, height: 8, background: "#8e8e93", borderRadius: "50%",
+                      animation: `ripple 1.3s ${delay}s infinite ease-in-out`,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input bar */}
+        <div className="flex-shrink-0 flex items-center gap-2.5 px-3.5 pt-2.5 pb-6 bg-white border-t" style={{ borderColor: "rgba(0,0,0,0.08)" }}>
+          <div style={{ flex: 1, background: "#f2f2f7", borderRadius: 20, padding: "8px 14px", fontSize: 15, color: "#86868b" }}>
+            iMessage
+          </div>
+          <div style={{ width: 32, height: 32, background: "#007AFF", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {done && (
+        <div
+          className="mt-6 text-sm font-semibold text-white px-7 py-3 rounded-3xl animate-in fade-in slide-in-from-bottom-2 duration-400"
+          style={{ background: "#007AFF" }}
+        >
+          github.com/notandruu/sideline
+        </div>
+      )}
+
+      <style>{`
+        @keyframes ripple {
+          0%, 60%, 100% { transform: scale(1); opacity: 0.4; }
+          30% { transform: scale(1.35); opacity: 1; }
+        }
+      `}</style>
+    </div>
+  )
+}
