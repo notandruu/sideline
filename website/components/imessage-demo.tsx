@@ -40,7 +40,7 @@ export function IMessageDemo() {
   const [typing, setTyping] = useState(false)
   const [title, setTitle] = useState("No app.")
   const [done, setDone] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const idxRef = useRef(0)
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -112,7 +112,8 @@ export function IMessageDemo() {
   }, [step])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    const el = messagesContainerRef.current
+    if (el) el.scrollTop = el.scrollHeight
   }, [messages, typing])
 
   return (
@@ -168,6 +169,7 @@ export function IMessageDemo() {
 
         {/* Messages */}
         <div
+          ref={messagesContainerRef}
           className="flex-1 overflow-y-auto flex flex-col gap-[3px] px-3 pt-4 pb-2"
           style={{ scrollbarWidth: "none" } as React.CSSProperties}
         >
@@ -242,7 +244,6 @@ export function IMessageDemo() {
             </div>
           )}
 
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input bar */}
