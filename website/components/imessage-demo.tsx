@@ -112,8 +112,10 @@ export function IMessageDemo() {
   }, [step])
 
   useEffect(() => {
-    const el = messagesContainerRef.current
-    if (el) el.scrollTop = el.scrollHeight
+    requestAnimationFrame(() => {
+      const el = messagesContainerRef.current
+      if (el) el.scrollTop = el.scrollHeight
+    })
   }, [messages, typing])
 
   return (
@@ -187,7 +189,7 @@ export function IMessageDemo() {
             }
             if (msg.kind === "meme") {
               return (
-                <div key={msg.id} className="flex items-end gap-1.5 mr-[60px] animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div key={msg.id} className="flex items-end gap-1.5 mr-[60px] animate-in fade-in duration-300">
                   <div style={{ borderRadius: "18px 18px 5px 18px", overflow: "hidden", maxWidth: 200 }}>
                     <img src={msg.src} alt="meme" style={{ width: "100%", display: "block" }} />
                   </div>
@@ -221,7 +223,7 @@ export function IMessageDemo() {
             return (
               <div
                 key={msg.id}
-                className={`flex items-end gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-300 ${isMe ? "flex-row-reverse ml-[60px]" : "mr-[60px]"}`}
+                className={`flex items-end gap-1.5 animate-in fade-in duration-300 ${isMe ? "flex-row-reverse ml-[60px]" : "mr-[60px]"}`}
               >
                 <div style={bubbleStyle}>{msg.text}</div>
               </div>
@@ -229,7 +231,7 @@ export function IMessageDemo() {
           })}
 
           {typing && (
-            <div className="flex items-end mr-[60px] animate-in fade-in slide-in-from-bottom-1 duration-200">
+            <div className="flex items-end mr-[60px] animate-in fade-in duration-200">
               <div style={{ background: "#E5E5EA", borderRadius: "18px 18px 18px 5px", padding: "12px 16px", display: "flex", gap: 5, alignItems: "center" }}>
                 {[0, 0.18, 0.36].map((delay, i) => (
                   <div
@@ -261,7 +263,7 @@ export function IMessageDemo() {
 
       {done && (
         <div
-          className="mt-6 text-sm font-semibold text-white px-7 py-3 rounded-3xl animate-in fade-in slide-in-from-bottom-2 duration-400"
+          className="mt-6 text-sm font-semibold text-white px-7 py-3 rounded-3xl animate-in fade-in duration-400"
           style={{ background: "#007AFF" }}
         >
           github.com/notandruu/sideline
