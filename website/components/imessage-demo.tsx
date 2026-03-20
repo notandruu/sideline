@@ -156,12 +156,6 @@ export function IMessageDemo() {
       onClick={advance}
       style={{ WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
     >
-      {/* Title */}
-      <div className="mb-7 min-h-[56px] text-center">
-        <p className="text-2xl font-bold tracking-tight text-[#1d1d1f]">{state.title}</p>
-        <p className="mt-1 text-[13px] text-[#86868b]">tap anywhere to advance</p>
-      </div>
-
       {/* Phone shell */}
       <div
         className="flex flex-col"
