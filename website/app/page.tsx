@@ -67,6 +67,21 @@ export default function Page() {
           </div>
         </div>
 
+        {/* Scroll indicator — bottom right */}
+        <button
+          onClick={scrollToDemo}
+          className="absolute bottom-10 right-10 z-10 flex flex-col items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity"
+          aria-label="Scroll down"
+        >
+          <svg width="28" height="42" viewBox="0 0 28 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="26" height="40" rx="13" stroke="white" strokeWidth="1.5"/>
+            <rect x="12.25" y="8" width="3.5" height="7" rx="1.75" fill="white">
+              <animate attributeName="y" values="8;16;8" dur="1.6s" repeatCount="indefinite" calcMode="ease-in-out"/>
+              <animate attributeName="opacity" values="1;0;1" dur="1.6s" repeatCount="indefinite" calcMode="ease-in-out"/>
+            </rect>
+          </svg>
+        </button>
+
         {/* Hero Copy — bottom left */}
         <div className="absolute bottom-12 left-12 z-10 max-w-md">
           <h1 className="font-serif text-3xl font-normal leading-tight text-white/90 md:text-4xl">
