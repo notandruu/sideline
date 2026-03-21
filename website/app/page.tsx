@@ -101,7 +101,8 @@ export default function Page() {
       {/* Demo Section */}
       <section
         ref={demoRef}
-        className="bg-background py-24 px-5 flex flex-col items-center"
+        className="py-24 px-5 flex flex-col items-center"
+        style={{ background: "#f5f5f7" }}
       >
         <IMessageDemo />
       </section>

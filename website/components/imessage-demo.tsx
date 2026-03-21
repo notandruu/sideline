@@ -287,11 +287,6 @@ export function IMessageDemo() {
         </div>
       </div>
 
-      {state.done && (
-        <div className="msg-enter" style={{ marginTop: 24, background: "#007AFF", color: "white", fontSize: 14, fontWeight: 600, padding: "12px 28px", borderRadius: 24 }}>
-          tryteammate.com
-        </div>
-      )}
 
       <style>{`
         .msg-enter { animation: msgFadeIn 0.28s ease both; }

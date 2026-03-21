@@ -1,6 +1,8 @@
-# sideline
+# teammate
 
-the best part about betting isn't making money — it's doing it with friends. sideline turns your iMessage group chat into a mini hedge fund that bets on sports and world events together, no app required.
+**[tryteammate.com](https://tryteammate.com)**
+
+the best part about betting isn't making money — it's doing it with friends. teammate turns your iMessage group chat into a mini hedge fund that bets on sports and world events together, no app required.
 
 built on [photon's imessage-kit](https://github.com/photon-ai/imessage-kit). the interface is your group chat. the agent is just another contact.
 
