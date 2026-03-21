@@ -29,7 +29,7 @@ built on [photon's imessage-kit](https://github.com/photon-ai/imessage-kit). the
 
 ## demo
 
-don't want to add API keys? **[view live demo →](https://notandruu.github.io/sideline/demo.html)** — shows a full bet from proposal to payout with the real iMessage UI and typing animations.
+don't want to add API keys? **[view live demo →](https://tryteammate.com)** — shows a full bet from proposal to payout with the real iMessage UI and typing animations.
 
 ---
 
