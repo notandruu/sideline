@@ -190,34 +190,6 @@ function FeaturesGrid() {
   )
 }
 
-function BrandStatement() {
-  const { ref, inView } = useSection()
-
-  return (
-    <section ref={ref} className="border-t border-border">
-      <div className="mx-auto max-w-5xl px-6 py-36 text-center">
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ duration: 0.8 }}
-          className="font-serif text-4xl font-normal leading-tight text-foreground md:text-5xl text-balance"
-        >
-          The best part about betting isn't making money. It's doing it with friends.
-        </motion.h2>
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground"
-        >
-          teammate turns your iMessage group chat into a mini hedge fund. No app required.
-        </motion.p>
-      </div>
-    </section>
-  )
-}
 
 
 function CallToAction({ onScrollToDemo }: { onScrollToDemo: () => void }) {
@@ -294,7 +266,6 @@ export function LandingSections({ onScrollToDemo }: { onScrollToDemo: () => void
       <HowItWorks onScrollToDemo={onScrollToDemo} />
       <FeatureStatement />
       <FeaturesGrid />
-      <BrandStatement />
       <CallToAction onScrollToDemo={onScrollToDemo} />
       <Footer />
     </>

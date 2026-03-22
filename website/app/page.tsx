@@ -116,9 +116,16 @@ export default function Page() {
       {/* Demo Section */}
       <section
         ref={demoRef}
-        className="py-24 px-5 flex flex-col items-center"
-        style={{ background: "#f5f5f7" }}
+        className="bg-background py-24 px-5 flex flex-col items-center"
       >
+        <div className="mb-12 text-center max-w-md">
+          <p className="font-serif text-2xl font-normal leading-snug text-foreground">
+            The best part about betting isn't making money. It's doing it with friends.
+          </p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Teammate turns your iMessage group chat into a mini hedge fund. No app required.
+          </p>
+        </div>
         <IMessageDemo />
       </section>
 
