@@ -240,12 +240,17 @@ export function IMessageDemo() {
                 className="msg-enter"
                 style={{
                   display: "flex",
-                  alignItems: "flex-end",
-                  flexDirection: isMe ? "row-reverse" : "row",
+                  flexDirection: "column",
+                  alignItems: isMe ? "flex-end" : "flex-start",
                   marginLeft: isMe ? 60 : 0,
                   marginRight: isMe ? 0 : 60,
                 }}
               >
+                {!isMe && !msg.cont && (
+                  <span style={{ fontSize: 11, fontWeight: 500, color: "#636366", marginBottom: 3, marginLeft: 4 }}>
+                    Teammate
+                  </span>
+                )}
                 <div style={{
                   padding: "9px 13px",
                   borderRadius: isMe
