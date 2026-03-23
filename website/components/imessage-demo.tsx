@@ -10,19 +10,30 @@ const SCRIPT = [
   { type: "them", text: "pool has $340 in it btw", typing: 0 },
   { type: "me",   text: "ok throw 100 on warriors" },
   { type: "them", text: "bet. proposal up —\n$100 warriors YES @ 61c\npayout $164 if they win 💰", typing: 1800 },
-  { type: "them", text: "u voted yes already (u proposed it lol)\nwaiting on jake + mike", typing: 0 },
+  { type: "them", text: "waiting on jake + mike", typing: 0 },
   { type: "me",   text: "JAKE" },
   { type: "me",   text: "bro vote yes rn" },
+  { type: "jake", text: "lol ok fine", typing: 900 },
+  { type: "jake", text: "yes", typing: 0 },
+  { type: "mike", text: "in", typing: 600 },
   { type: "them", text: "jake in 👍 mike in 👍\n\nbet placed 🎰", typing: 1000 },
   { type: "meme", src: "/images/speed.webp" },
   { type: "ts",   text: "11:48 PM" },
   { type: "them", text: "🏆 warriors won bro\n\ncashed $164, pool sitting at $404 now", typing: 700 },
   { type: "me",   text: "LETSSS GOOOO" },
   { type: "me",   text: "omg" },
-  { type: "them", text: "lmao easy money\n\nceltics game tmrw at 7, want me to find a market?", typing: 1600 },
+  { type: "jake", text: "LETS GOOO", typing: 500 },
+  { type: "mike", text: "lmaooo", typing: 400 },
+  { type: "them", text: "easy money\n\nceltics game tmrw at 7, want me to find a market?", typing: 1600 },
   { type: "me",   text: "obviously 😈" },
   { type: "meme", src: "/images/joever.jpg" },
 ] as const
+
+const SENDER_NAMES: Record<string, string> = {
+  them: "Teammate",
+  jake: "Jake",
+  mike: "Mike",
+}
 
 const TITLES: { at: number; text: string }[] = [
   { at: 0,  text: "No app." },
@@ -42,7 +53,7 @@ function getTitle(idx: number) {
 
 type Msg =
   | { id: number; kind: "ts";   text: string }
-  | { id: number; kind: "me" | "them"; text: string; cont: boolean }
+  | { id: number; kind: "me" | "them" | "jake" | "mike"; text: string; cont: boolean }
   | { id: number; kind: "meme"; src: string }
 
 type State = {
@@ -101,10 +112,11 @@ export function IMessageDemo() {
     const item = SCRIPT[idx]
     dispatch({ type: "TITLE", text: getTitle(idx) })
 
+    const isIncoming = item.type === "them" || item.type === "jake" || item.type === "mike"
     const typingMs =
       "typing" in item && item.typing != null
         ? item.typing
-        : item.type === "them" ? 1100 : 0
+        : isIncoming ? 1100 : 0
 
     const commit = () => {
       const id = idCounter.current++
@@ -124,7 +136,7 @@ export function IMessageDemo() {
       schedule(runStep, item.type === "me" ? 650 : 750)
     }
 
-    if (typingMs > 0 && item.type === "them") {
+    if (typingMs > 0 && isIncoming) {
       dispatch({ type: "TYPING", on: true })
       scrollToBottom()
       schedule(() => {
@@ -234,6 +246,7 @@ export function IMessageDemo() {
             )
 
             const isMe = msg.kind === "me"
+            const senderName = SENDER_NAMES[msg.kind]
             return (
               <div
                 key={msg.id}
@@ -246,9 +259,9 @@ export function IMessageDemo() {
                   marginRight: isMe ? 0 : 60,
                 }}
               >
-                {!isMe && !msg.cont && (
+                {!isMe && !msg.cont && senderName && (
                   <span style={{ fontSize: 11, fontWeight: 500, color: "#636366", marginBottom: 3, marginLeft: 4 }}>
-                    Teammate
+                    {senderName}
                   </span>
                 )}
                 <div style={{
